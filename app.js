@@ -1,7 +1,10 @@
+console.log("running this file rigth now");
 const express = require('express');
 const app = express();
 
-app.use(express.json());
+app.use(express.json()); // MUST be here
+
+// routes start here
 
 let todos = [
   { id: 1, task: 'Learn Node.js', completed: false },
@@ -26,6 +29,7 @@ app.get('/todos/:id', (req, res) => {
 
 // POST
 app.post('/todos', (req, res) => {
+
   if (!req.body.task) {
     return res.status(400).json({
       message: 'Task field is required'
@@ -34,8 +38,8 @@ app.post('/todos', (req, res) => {
 
   const newTodo = {
     id: todos.length + 1,
-    task: req.body.task,
-    completed: false
+    completed: false,
+    ...req.body
   };
 
   todos.push(newTodo);
